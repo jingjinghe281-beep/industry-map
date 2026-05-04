@@ -15,11 +15,11 @@ st.set_page_config(layout="wide", page_title="中国产业地图可视化系统"
 
 @st.cache_resource
 def load_basemap():
-    province = gpd.read_file("中国地图省.shp").to_crs(epsg=4326)
-    nine_line = gpd.read_file("中国九段线.shp").to_crs(epsg=4326)
-    beijing = gpd.read_file("北京市.shp", encoding='utf-8', engine='pyogrio').to_crs(epsg=4326)
-    shenzhen = gpd.read_file("深圳市.shp", encoding='utf-8', engine='pyogrio').to_crs(epsg=4326)
-    suzhou = gpd.read_file("苏州市.shp", encoding='utf-8', engine='pyogrio').to_crs(epsg=4326)
+    province = gpd.read_file("中国地图省.geojson")
+    nine_line = gpd.read_file("中国九段线.geojson")
+    beijing = gpd.read_file("北京市.geojson")
+    shenzhen = gpd.read_file("深圳市.geojson")
+    suzhou = gpd.read_file("苏州市.geojson")
     return province, nine_line, beijing, shenzhen, suzhou
 
 @st.cache_resource
@@ -31,8 +31,6 @@ def load_shp_safe(filepath):
     if os.path.exists(filepath):
         try:
             gdf = gpd.read_file(filepath)
-            if gdf.crs is not None and str(gdf.crs).upper() != 'EPSG:4326':
-                gdf = gdf.to_crs(epsg=4326)
             return gdf
         except:
             return None
