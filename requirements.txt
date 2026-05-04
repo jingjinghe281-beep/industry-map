@@ -1,6 +1,7 @@
-streamlit==1.32.0
+streamlit
 pandas
 geopandas
 folium
-streamlit-folium==0.15.0
+streamlit-folium
 openpyxl
+pyogrio
