@@ -1,3 +1,5 @@
+import sys
+sys.setrecursionlimit(10000)
 import streamlit as st
 import pandas as pd
 import geopandas as gpd
@@ -11,20 +13,20 @@ st.set_page_config(layout="wide", page_title="中国产业地图可视化系统"
 # ===== 缓存数据加载 =====
 # 把 load_basemap() 函数替换成下面这个：
 
-@st.cache_data
+@st.cache_resource
 def load_basemap():
     province = gpd.read_file("中国地图省.shp").to_crs(epsg=4326)
     nine_line = gpd.read_file("中国九段线.shp").to_crs(epsg=4326)
-    beijing = gpd.read_file("北京市.shp", encoding='utf-8').to_crs(epsg=4326)
-    shenzhen = gpd.read_file("深圳市.shp", encoding='utf-8').to_crs(epsg=4326)
-    suzhou = gpd.read_file("苏州市.shp", encoding='utf-8').to_crs(epsg=4326)
+    beijing = gpd.read_file("北京市.shp", encoding='utf-8', engine='pyogrio').to_crs(epsg=4326)
+    shenzhen = gpd.read_file("深圳市.shp", encoding='utf-8', engine='pyogrio').to_crs(epsg=4326)
+    suzhou = gpd.read_file("苏州市.shp", encoding='utf-8', engine='pyogrio').to_crs(epsg=4326)
     return province, nine_line, beijing, shenzhen, suzhou
 
-@st.cache_data
+@st.cache_resource
 def load_excel():
     return pd.read_excel("第四问python交互数据.xlsx")
 
-@st.cache_data
+@st.cache_resource
 def load_shp_safe(filepath):
     if os.path.exists(filepath):
         try:
